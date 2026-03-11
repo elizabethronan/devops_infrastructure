@@ -1,0 +1,48 @@
+version: '3.8'
+services:
+  ecommerce-frontend:
+    build: ./ecommerce-frontend
+    ports: 
+      - "3000:80"
+    depends_on:
+      - product-service
+      - order-service
+
+  database:
+    build: ./database
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=password
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+  order-service:
+    build: ./order-service
+    ports:
+      - "3002:3002"
+    environment:
+      - DB_HOST=database
+      - DB_NAME=ecommerce
+      - DB_USER=admin
+      - DB_PASSWORD=password
+    depends_on:
+      - database
+
+  product-service:
+    build: ./product-service
+    ports:
+      - "3001:3001"
+    environment:
+      - DB_HOST=database
+      - DB_NAME=ecommerce
+      - DB_USER=admin
+      - DB_PASSWORD=password
+    depends_on:
+      - database
+    
+networks:
+volumes:
+  db_data:
+
+# https://dzone.com/articles/manage-microservices-with-docker-compose
