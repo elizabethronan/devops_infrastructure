@@ -1,7 +1,7 @@
 version: '3.8'
 services:
   ecommerce-frontend:
-    build: ./ecommerce-frontend
+    build: ../ecommerce-frontend
     ports: 
       - "3000:80"
     depends_on:
@@ -9,7 +9,7 @@ services:
       - order-service
 
   database:
-    build: ./database
+    build: ../database
     ports:
       - "5432:5432"
     environment:
@@ -18,7 +18,7 @@ services:
       - db_data:/var/lib/postgresql/data
 
   order-service:
-    build: ./order-service
+    build: ../order-service
     ports:
       - "3002:3002"
     environment:
@@ -30,7 +30,7 @@ services:
       - database
 
   product-service:
-    build: ./product-service
+    build: ../product-service
     ports:
       - "3001:3001"
     environment:
@@ -40,8 +40,7 @@ services:
       - DB_PASSWORD=password
     depends_on:
       - database
-    
-networks:
+
 volumes:
   db_data:
 
