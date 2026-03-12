@@ -1,0 +1,15 @@
+terraform/.terraform/
+terraform/terraform.tfvars
+terraform/*.tfstate
+terraform/*.tfstate.backup
+
+terraform/workspaces/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/.terraform/
+terraform/terraform.tfvars
+
+terraform/workspaces/
+terraform/backups/
+terraform/*.tfstate
+terraform/*.tfstate.backup
