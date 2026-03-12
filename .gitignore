@@ -13,3 +13,4 @@ terraform/workspaces/
 terraform/backups/
 terraform/*.tfstate
 terraform/*.tfstate.backup
+terraform/terraform.tfstate.d/
