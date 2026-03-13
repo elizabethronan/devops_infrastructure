@@ -10,7 +10,7 @@ def call(String serviceName, String imageName, String imageTag, String namespace
 
             # Apply base manifests except nodeport
             for file in /tmp/infrastructure/kubernetes/base/${serviceName}/*.yaml; do
-                if [[ \$file != *"nodeport"* ]]; then
+                if [[ \$file != *"nodeport"* ]] && [[ \$file != *"ingress"* ]]; then
                     sed 's/namespace: dev/namespace: ${namespace}/g' \$file | kubectl apply -f -
                 fi
             done
