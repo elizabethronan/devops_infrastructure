@@ -7,17 +7,24 @@ def call(String serviceName, String imageName, String imageTag, String namespace
         sh """
             rm -rf /tmp/infrastructure
             git clone https://\${GIT_USER}:\${GIT_PASS}@github.com/elizabethronan/devops_infrastructure.git /tmp/infrastructure
-            
-            # Apply all base manifests with correct namespace
+
+            # Apply base manifests except nodeport
             for file in /tmp/infrastructure/kubernetes/base/${serviceName}/*.yaml; do
-                sed 's/namespace: dev/namespace: ${namespace}/g' \$file | kubectl apply -f -
+                if [[ \$file != *"nodeport"* ]]; then
+                    sed 's/namespace: dev/namespace: ${namespace}/g' \$file | kubectl apply -f -
+                fi
             done
-            
+
+            # Apply environment-specific nodeport
+            if [ -f /tmp/infrastructure/kubernetes/${namespace}/${serviceName}-nodeport.yaml ]; then
+                kubectl apply -f /tmp/infrastructure/kubernetes/${namespace}/${serviceName}-nodeport.yaml
+            fi
+
             # Update image tag
             kubectl set image deployment/${serviceName} \
                 ${serviceName}=${imageName}:${imageTag} \
                 -n ${namespace}
-                
+
             rm -rf /tmp/infrastructure
         """
     }
